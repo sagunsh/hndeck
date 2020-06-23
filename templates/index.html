@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="HN Deck: An alternate way to browse Hacker News">
+    <meta name="author" content="Sagun shrestha">
+    <title>HN Deck: An alternate way to browse Hacker News</title>
+
+    <meta name="title" content="HN Deck">
+    <meta name="description" content="HN Deck: An alternate way to browse Hacker News">
+    <meta name="keywords" content="hackernews, ycombinator, hacker news, hackernews api"/>
+
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="HN Deck">
+    <meta property="og:url" content="hndeck.sagunshrestha.com">
+    <meta property="og:title" content="HN Deck">
+    <meta property="og:description" content="HN Deck: An alternate way to browse Hacker News">
+    <meta property="og:image" content="https://hndeck.sagunshrestha.com/static/img/profile.png">
+
+    <meta property="twitter:card" content="summary">
+    <meta property="twitter:url" content="hndeck.sagunshrestha.com">
+    <meta property="twitter:title" content="HN Deck">
+    <meta property="twitter:description" content="HN Deck: An alternate way to browse Hacker News">
+    <meta property="twitter:image" content="https://hndeck.sagunshrestha.com/static/img/profile.png">
+    <meta property="twitter:image:src" content="https://hndeck.sagunshrestha.com/static/img/profile.png">
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+          integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+    <!--  Fontawesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css">
+
+    <!--  Custom CSS  -->
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+
+    <!--  Favicons  -->
+    <link rel="apple-touch-icon" href="{{ url_for('static', filename='img/apple-touch-icon.png') }}" sizes="180x180">
+    <link rel="icon" href="{{ url_for('static', filename='img/favicon-32x32.png') }}" sizes="32x32" type="image/png">
+    <link rel="icon" href="{{ url_for('static', filename='img/favicon-16x16.png') }}" sizes="16x16" type="image/png">
+    <link rel="icon" href="{{ url_for('static', filename='img/favicon.ico') }}">
+</head>
+<body>
+<main role="main">
+    <section class="text-center" style="margin-top: 20px">
+        <div class="container">
+            <p class="lead">Like it? Spread the word</p>
+            <ul class="list-inline text-center">
+                <li class="list-inline-item">
+                    <a class="share-button"
+                       href="https://twitter.com/intent/tweet?url=https://hndeck.sagunshrestha.com&text=Check out HN Deck - An alternate way to browse Hacker News by @sagunsh"
+                       target="_blank">
+                        <span class="fa-stack fa-lg">
+                            <i class="fas fa-square fa-stack-2x"></i>
+                            <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
+                        </span>
+                    </a>
+                </li>
+
+                <li class="list-inline-item">
+                    <a class="share-button"
+                       href="https://www.facebook.com/sharer/sharer.php?u=https://hndeck.sagunshrestha.com/"
+                       target="_blank">
+                        <span class="fa-stack fa-lg">
+                            <i class="fas fa-square fa-stack-2x"></i>
+                            <i class="fab fa-facebook-f fa-stack-1x fa-inverse"></i>
+                        </span>
+                    </a>
+                </li>
+
+                <li class="list-inline-item">
+                    <a class="share-button"
+                       href="http://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fhndeck.sagunshrestha.com%2F&title=HN%20Deck%3A%20An%20alternate%20way%20to%20browse%20Hacker%20News"
+                       target="_blank">
+                        <span class="fa-stack fa-lg">
+                            <i class="fas fa-square fa-stack-2x"></i>
+                            <i class="fab fa-linkedin-in fa-stack-1x fa-inverse"></i>
+                        </span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </section>
+
+    <div class="container-fluid">
+        <div class="row">
+            {% for key, items in stories.items() %}
+            <div class="col">
+                <div class="header">
+                    <h1 class="col-header">{{ key}}</h1>
+                </div>
+                <div class="stories">
+                    {% for item in items %}
+                    <article class="item-wrapper">
+                        <div class="item">
+                            <p class="title">
+                                <a href="{{ item.url or item.hn_url }}" target="_blank">
+                                    {% if item.title|length > 70 %}
+                                    {{ item.title[:67] }}...
+                                    {% else %}
+                                    {{ item.title}}
+                                    {% endif %}
+                                </a>
+                            </p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <small class="text-muted text-left">
+                                    {{ item.score }} points by <a href="{{ item.user_url }}" target="_blank">{{ item.by
+                                    }}</a> {{ item.time }}
+                                </small>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <small class="text-muted text-left">{{ item.descendants }} comments | <a
+                                        href="{{ item.hn_url }}" target="_blank">discuss</a>
+                                    {% if item.domain %}| <a
+                                            href="https://news.ycombinator.com/from?site={{ item.domain }}"
+                                            target="_blank">{{ item.domain }}</a>{% endif %}</small>
+                            </div>
+                        </div>
+                    </article>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</main>
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-md-10 mx-auto">
+                <ul class="list-inline text-center">
+                    <li class="list-inline-item">
+                        <a href="https://twitter.com/sagunsh" target="_blank">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    <li class="list-inline-item">
+                        <a href="https://github.com/sagunsh" target="_blank">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-github-alt fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    <li class="list-inline-item">
+                        <a href="https://medium.com/@sagunshrestha/" target="_blank">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-medium-m fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    <li class="list-inline-item">
+                        <a href="https://www.linkedin.com/in/sagun-shrestha/" target="_blank">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-linkedin-in fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+                <p class="copyright text-muted" style="padding-bottom: 10px">Made by <a
+                        href="https://sagunshrestha.com" target="_blank">Sagun Shrestha</a></p>
+                <p class="copyright text-muted">Built using <a href="https://github.com/HackerNews/API"
+                                                               target="_blank">official Hacker News API</a></p>
+            </div>
+        </div>
+    </div>
+</footer>
+</body>
+</html>
