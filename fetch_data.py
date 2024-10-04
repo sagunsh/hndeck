@@ -1,13 +1,18 @@
 import csv
+import os
 from urllib.parse import urlparse
 
 import requests
 
 
 def scrape_item(story):
-    item_url = 'https://hacker-news.firebaseio.com/v0/item/{item_id}.json?print=pretty'
-    item_response = requests.get(item_url.format(item_id=story))
-    item = item_response.json()
+    try:
+        item_url = f'https://hacker-news.firebaseio.com/v0/item/{story}.json?print=pretty'
+        item_response = requests.get(item_url, timeout=180)
+        item = item_response.json()
+    except:
+        return
+
     if not item:
         return
     item.pop('kids', None)
@@ -28,11 +33,13 @@ def scrape_item(story):
             if domain.startswith(sub_domains):
                 domain = domain.split('.', 1)[1]
         item['domain'] = domain
-    print(item)
     return item
 
 
 if __name__ == '__main__':
+    data_dir = 'data'
+    os.makedirs(data_dir, exist_ok=True)
+
     urls = {
         'top': 'https://hacker-news.firebaseio.com/v0/topstories.json?print=pretty',
         'new': 'https://hacker-news.firebaseio.com/v0/newstories.json?print=pretty',
@@ -45,18 +52,24 @@ if __name__ == '__main__':
 
     for key, value in urls.items():
         print(f'Scraping {key}')
-        response = requests.get(value)
-        stories = response.json()
+
+        try:
+            response = requests.get(value, timeout=180)
+            stories = response.json()
+        except:
+            continue
 
         items = []
         for story in stories[:30]:
             item = scrape_item(story)
-            items.append(item)
+            if item:
+                print(item)
+                items.append(item)
 
         if not items:
             continue
 
-        with open(f'data/{key}.csv', 'w') as file:
+        with open(os.path.join(data_dir, f'{key}.csv'), 'w') as file:
             writer = csv.DictWriter(file, fieldnames=items[0].keys())
             writer.writeheader()
             writer.writerows(items)

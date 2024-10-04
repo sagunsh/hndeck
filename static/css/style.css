@@ -156,7 +156,12 @@ footer .copyright {
 }
 
 footer a {
-    color: #212529;
+    color: #007bff;
+}
+
+footer a:hover {
+    color: #0062cc;
+    text-decoration: underline;
 }
 
 .share-button {

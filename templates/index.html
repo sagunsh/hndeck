@@ -29,9 +29,6 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
           integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
 
-    <!--  Fontawesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css">
-
     <!--  Custom CSS  -->
     <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
 
@@ -42,138 +39,78 @@
     <link rel="icon" href="{{ url_for('static', filename='img/favicon.ico') }}">
 </head>
 <body>
-<main role="main">
-    <section class="text-center" style="margin-top: 20px">
-        <div class="container">
-            <p class="lead">Like it? Spread the word</p>
-            <ul class="list-inline text-center">
-                <li class="list-inline-item">
-                    <a class="share-button"
-                       href="https://twitter.com/intent/tweet?url=https://hndeck.sagunshrestha.com&text=Check out HN Deck - An alternate way to browse Hacker News by @sagunsh"
-                       target="_blank">
-                        <span class="fa-stack fa-lg">
-                            <i class="fas fa-square fa-stack-2x"></i>
-                            <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
-                        </span>
-                    </a>
-                </li>
+    <main role="main">
+        <section class="text-center" style="margin-top: 20px">
+            <div class="container">
+                <p class="lead">Source code for this website is
+                    <a href="https://github.com/sagunsh/hndeck" target="_blank"
+                       style="color: #0f2af7; text-decoration: underline;">on GitHub</a>
+                </p>
+            </div>
+        </section>
 
-                <li class="list-inline-item">
-                    <a class="share-button"
-                       href="https://www.facebook.com/sharer/sharer.php?u=https://hndeck.sagunshrestha.com/"
-                       target="_blank">
-                        <span class="fa-stack fa-lg">
-                            <i class="fas fa-square fa-stack-2x"></i>
-                            <i class="fab fa-facebook-f fa-stack-1x fa-inverse"></i>
-                        </span>
-                    </a>
-                </li>
-
-                <li class="list-inline-item">
-                    <a class="share-button"
-                       href="http://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fhndeck.sagunshrestha.com%2F&title=HN%20Deck%3A%20An%20alternate%20way%20to%20browse%20Hacker%20News"
-                       target="_blank">
-                        <span class="fa-stack fa-lg">
-                            <i class="fas fa-square fa-stack-2x"></i>
-                            <i class="fab fa-linkedin-in fa-stack-1x fa-inverse"></i>
-                        </span>
-                    </a>
-                </li>
-            </ul>
-
-            <p class="lead">Check out the codes <a href="https://github.com/sagunsh/hndeck" target="_blank" style="color: #0f2af7; text-decoration: underline;">on github</a>
-            </p>
-        </div>
-    </section>
-
-    <div class="container-fluid">
-        <div class="row">
-            {% for key, items in stories.items() %}
-            <div class="col">
-                <div class="header">
-                    <h1 class="col-header">{{ key}}</h1>
-                </div>
-                <div class="stories">
-                    {% for item in items %}
-                    <article class="item-wrapper">
-                        <div class="item">
-                            <p class="title">
-                                <a href="{{ item.url or item.hn_url }}" target="_blank">
-                                    {% if item.title|length > 70 %}
-                                    {{ item.title[:67] }}...
-                                    {% else %}
-                                    {{ item.title}}
-                                    {% endif %}
-                                </a>
-                            </p>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <small class="text-muted text-left">
-                                    {{ item.score }} points by <a href="{{ item.user_url }}" target="_blank">{{ item.by
-                                    }}</a> {{ item.time }}
-                                </small>
-                            </div>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <small class="text-muted text-left">{{ item.descendants }} comments | <a
-                                        href="{{ item.hn_url }}" target="_blank">discuss</a>
-                                    {% if item.domain %}| <a
-                                            href="https://news.ycombinator.com/from?site={{ item.domain }}"
-                                            target="_blank">{{ item.domain }}</a>{% endif %}</small>
-                            </div>
+        <div class="container-fluid">
+            <div class="row">
+                {% for key, items in stories.items() %}
+                    <div class="col">
+                        <div class="header">
+                            <h1 class="col-header">{{ key }}</h1>
                         </div>
-                    </article>
-                    {% endfor %}
+                        <div class="stories">
+                            {% for item in items %}
+                                <article class="item-wrapper">
+                                    <div class="item">
+                                        <p class="title">
+                                            <a href="{{ item.url or item.hn_url }}" target="_blank">
+                                                {% if item.title|length > 70 %}
+                                                    {{ item.title[:67] }}...
+                                                {% else %}
+                                                    {{ item.title }}
+                                                {% endif %}
+                                            </a>
+                                        </p>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <small class="text-muted text-left">
+                                                {{ item.score }} points by <a href="{{ item.user_url }}"
+                                                                              target="_blank">{{ item.by }}</a> {{ item.time }}
+                                            </small>
+                                        </div>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <small class="text-muted text-left">{{ item.descendants }} comments | <a
+                                                    href="{{ item.hn_url }}" target="_blank">discuss</a>
+                                                {% if item.domain %}| <a
+                                                        href="https://news.ycombinator.com/from?site={{ item.domain }}"
+                                                        target="_blank">{{ item.domain }}</a>{% endif %}</small>
+                                        </div>
+                                    </div>
+                                </article>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-md-10 mx-auto">
+                    <ul class="list-inline text-center">
+                        <li class="list-inline-item">
+                            <a href="https://github.com/sagunsh" target="_blank">Github</a>
+                        </li>
+                        <li class="list-inline-item">
+                            <a href="https://www.linkedin.com/in/sagun-shrestha/" target="_blank">LinkedIn</a>
+                        </li>
+                    </ul>
+                    <p class="copyright text-muted" style="padding-bottom: 10px">Made by <a
+                            href="https://sagunshrestha.com" target="_blank">Sagun Shrestha</a></p>
+                    <p class="copyright text-muted">Built using <a href="https://github.com/HackerNews/API"
+                                                                   target="_blank">official Hacker News API</a></p>
                 </div>
             </div>
-            {% endfor %}
         </div>
-    </div>
-</main>
-
-<footer>
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-8 col-md-10 mx-auto">
-                <ul class="list-inline text-center">
-                    <li class="list-inline-item">
-                        <a href="https://twitter.com/sagunsh" target="_blank">
-                            <span class="fa-stack fa-lg">
-                                <i class="fas fa-circle fa-stack-2x"></i>
-                                <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
-                            </span>
-                        </a>
-                    </li>
-                    <li class="list-inline-item">
-                        <a href="https://github.com/sagunsh" target="_blank">
-                            <span class="fa-stack fa-lg">
-                                <i class="fas fa-circle fa-stack-2x"></i>
-                                <i class="fab fa-github-alt fa-stack-1x fa-inverse"></i>
-                            </span>
-                        </a>
-                    </li>
-                    <li class="list-inline-item">
-                        <a href="https://medium.com/@sagunshrestha/" target="_blank">
-                            <span class="fa-stack fa-lg">
-                                <i class="fas fa-circle fa-stack-2x"></i>
-                                <i class="fab fa-medium-m fa-stack-1x fa-inverse"></i>
-                            </span>
-                        </a>
-                    </li>
-                    <li class="list-inline-item">
-                        <a href="https://www.linkedin.com/in/sagun-shrestha/" target="_blank">
-                            <span class="fa-stack fa-lg">
-                                <i class="fas fa-circle fa-stack-2x"></i>
-                                <i class="fab fa-linkedin-in fa-stack-1x fa-inverse"></i>
-                            </span>
-                        </a>
-                    </li>
-                </ul>
-                <p class="copyright text-muted" style="padding-bottom: 10px">Made by <a
-                        href="https://sagunshrestha.com" target="_blank">Sagun Shrestha</a></p>
-                <p class="copyright text-muted">Built using <a href="https://github.com/HackerNews/API"
-                                                               target="_blank">official Hacker News API</a></p>
-            </div>
-        </div>
-    </div>
-</footer>
+    </footer>
 </body>
 </html>
